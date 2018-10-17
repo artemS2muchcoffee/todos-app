@@ -1,22 +1,21 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TodosRoutingModule } from './todos-routing.module';
+import { NgModule } from '@angular/core';
 
+import {FooterModule} from './footer/footer.module';
+import {HeaderModule} from './header/header.module';
+import { TodosRoutingModule } from './todos-routing.module';
 import { TodosComponent } from './todos.component';
-// import { HeaderModule } from './header/header.module';
-// import { FooterModule } from './footer/footer.module';
-import {HeaderComponent} from './header/header.component';
-import {FooterComponent} from './footer/footer.component';
 
 @NgModule({
+  declarations: [
+    TodosComponent
+  ],
   imports: [
     CommonModule,
-    TodosRoutingModule
-  ],
-  declarations: [
-    TodosComponent,
-    HeaderComponent,
-    FooterComponent
+    TodosRoutingModule,
+    HeaderModule,
+    FooterModule
   ]
+
 })
 export class TodosModule { }
