@@ -4,14 +4,14 @@ import { TodoItems } from '../../core/models/todo-items';
 import { TodoItemsService } from '../../core/services/todo-items.service';
 
 @Component({
-  selector: 'app-all-items',
-  templateUrl: './all-items.component.html',
-  styleUrls: ['./all-items.component.scss']
+  selector: 'app-todo-items',
+  templateUrl: './todo-items.component.html',
+  styleUrls: ['./todo-items.component.scss']
 })
-export class AllItemsComponent implements OnInit {
+export class TodoItemsComponent implements OnInit {
   todoItems: TodoItems[];
 
-  constructor( private todoItemsService: TodoItemsService ) {}
+  constructor(private todoItemsService: TodoItemsService) {}
 
   ngOnInit() {
     this.todoItems = this.todoItemsService.todoItems;
