@@ -2,6 +2,6 @@
   <li *ngFor="let items of todoItems | filterTodoItemsPipe:'complete'">
     <input type="checkbox" [checked]="items.complete" (click)="changeTodoItemComplete(items.id)">
     <span>{{items.id}} </span> {{items.title}}
-    <button type="button" (click)="deleteTodoItemById(items.id)">Delete Item</button>
+    <button class="btn-delete" type="button" (click)="deleteTodoItemById(items.id)">Delete Item</button>
   </li>
 </ul>
