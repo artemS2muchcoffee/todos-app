@@ -1,5 +1,5 @@
 export class TodoItems {
-  id: number;
-  title: string;
-  complete: false;
+  id: number =  Math.floor((Math.random() * 1000));
+  title: string = '';
+  complete: boolean;
 }
