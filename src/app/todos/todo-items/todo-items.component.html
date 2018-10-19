@@ -1,5 +1,6 @@
 <ul>
-  <li *ngFor="let items of data | filterTodoItemsPipe:'complete'">
-    <span>{{items.id}} </span> {{items.title}}
+  <li *ngFor="let items of todoItems | filterTodoItemsPipe:'complete'">
+    <p><span>{{items.id}} </span> {{items.title}}</p>
+    <button type="button" (click)="deleteTodoItemById(items.id)">Delete Item</button>
   </li>
 </ul>
