@@ -20,8 +20,6 @@ export class FilterTodoItemsPipe implements PipeTransform {
         resultArray.push(item);
       }
     }
-
     return resultArray;
-
   }
 }

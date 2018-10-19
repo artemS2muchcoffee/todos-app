@@ -11,9 +11,25 @@ export class TodoItemsService {
   todoItems: TodoItems[] = TODO_ITEMS;
   updateTodoItems = new Subject<TodoItems[]>();
 
+  toggleTodoItemComplete(id: number) {
+    const updateItems = this.todoItems.map(
+      item => {
+        if (item.id === id) {
+          item.complete = !item.complete;
+        }
+        return item;
+      }
+    );
+
+    this.todoItems = updateItems;
+    this.updateTodoItems.next([...this.todoItems]);
+
+  }
+
+
   deleteTodoItemById(id: number) {
-    const updateTodoItems = this.todoItems.filter(item => item.id !== id);
-    this.todoItems = updateTodoItems;
+    const updateItems = this.todoItems.filter(item => item.id !== id);
+    this.todoItems = updateItems;
     this.updateTodoItems.next([...this.todoItems]);
   }
 
