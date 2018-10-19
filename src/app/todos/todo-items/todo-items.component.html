@@ -1,5 +1,5 @@
 <ul>
-  <li *ngFor="let items of todoItems">
+  <li *ngFor="let items of data | filterTodoItemsPipe:'complete'">
     <span>{{items.id}} </span> {{items.title}}
   </li>
 </ul>

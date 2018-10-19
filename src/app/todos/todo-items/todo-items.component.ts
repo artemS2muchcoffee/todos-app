@@ -11,11 +11,13 @@ import { TodoItemsService } from '../../core/services/todo-items.service';
 })
 export class TodoItemsComponent implements OnInit {
   todoItems: TodoItems[];
+  data;
 
   constructor(private todoItemsService: TodoItemsService,
               private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.todoItems = this.todoItemsService.todoItems;
+    this.data = this.route.snapshot.data.value;
   }
 }
