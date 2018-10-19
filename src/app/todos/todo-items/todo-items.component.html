@@ -1,6 +1,7 @@
 <ul>
   <li *ngFor="let items of todoItems | filterTodoItemsPipe:'complete'">
-    <p><span>{{items.id}} </span> {{items.title}}</p>
+    <input type="checkbox" [checked]="items.complete">
+    <span>{{items.id}} </span> {{items.title}}
     <button type="button" (click)="deleteTodoItemById(items.id)">Delete Item</button>
   </li>
 </ul>

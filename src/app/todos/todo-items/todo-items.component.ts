@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { TodoItems } from '../../core/models/todo-items';
 import { TodoItemsService } from '../../core/services/todo-items.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-todo-items',
@@ -14,6 +14,7 @@ export class TodoItemsComponent implements OnInit, OnDestroy {
   todoItems: TodoItems[];
   itemsSub: Subscription;
   data;
+
 
   constructor(private todoItemsService: TodoItemsService,
               private route: ActivatedRoute) {}
