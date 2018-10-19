@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { FooterComponent } from './footer.component';
 import { TodosRoutingModule } from '../todos-routing.module';
+
+import { FooterComponent } from './footer.component';
 
 @NgModule({
   imports: [
