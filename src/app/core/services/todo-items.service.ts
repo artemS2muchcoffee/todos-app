@@ -1,15 +1,54 @@
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
-import { TODO_ITEMS } from '../mock/mock-todo-items';
 import { TodoItems } from '../models/todo-items';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodoItemsService {
-  todoItems: TodoItems[] = TODO_ITEMS;
+  todoItems: TodoItems[];
   updateTodoItems = new Subject<TodoItems[]>();
+
+  constructor(private http: HttpClient) {
+    this.fetchTodoItems();
+  }
+
+
+  fetchTodoItems() {
+    this.http.get('http://localhost:3000/todo-items')
+    .pipe(
+      catchError(this.handleError),
+      map(itemData => {
+        console.log(itemData);
+        const items = [];
+        for ( const key in itemData) {
+          if (itemData.hasOwnProperty(key)) {
+            items.push({...itemData[key]});
+          }
+        }
+        return items;
+      }))
+    .subscribe(transformData => {
+      console.log(transformData);
+      this.todoItems = transformData;
+      this.updateTodoItems.next([...this.todoItems]);
+    });
+  }
+
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'An unknown error occurred!';
+    if (error.message) {
+      errorMessage = error.message;
+    }
+    const initialState = { message: errorMessage};
+    console.log(initialState);
+    return throwError(error);
+  }
+
 
   toggleTodoItemComplete(id: number) {
     const updateItems = this.todoItems.map(

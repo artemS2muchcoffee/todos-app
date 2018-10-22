@@ -6,6 +6,9 @@ import {Pipe, PipeTransform} from '@angular/core';
 export class FilterTodoItemsPipe implements PipeTransform {
 
   transform(value: any, route: string, completed: string): any {
+    if (!value) {
+      return value;
+    }
     const resultArray = [];
     for (const item of value) {
       if (route === '') {

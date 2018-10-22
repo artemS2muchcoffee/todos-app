@@ -23,10 +23,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     .subscribe((items: TodoItems[]) => {
       this.todoItems = items;
       this.count = this.todoItems.length;
-
     });
-
-    this.count = this.todoItems.length;
   }
 
   ngOnDestroy() {
