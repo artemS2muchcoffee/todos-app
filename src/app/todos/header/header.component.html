@@ -1,7 +1,13 @@
 <nav>
-  <p>
-    header works!
-  </p>
+  <form>
+    <input
+      #newItem
+      type="text"
+      placeholder="What needs to be done?"
+      name="newItem"
+      [(ngModel)]="clearValue"
+      (keyup.enter)="addTodoItem(newItem.value)">
+  </form>
 </nav>
 
 

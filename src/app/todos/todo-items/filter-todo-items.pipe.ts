@@ -1,22 +1,20 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {Router} from '@angular/router';
 
 @Pipe({
   name: 'filterTodoItemsPipe',
 })
 export class FilterTodoItemsPipe implements PipeTransform {
-  constructor(private route: Router) {}
 
-  transform(value: any, completed: string): any {
+  transform(value: any, route: string, completed: string): any {
     const resultArray = [];
     for (const item of value) {
-      if (this.route.url === '/') {
+      if (route === '') {
         return value;
       }
-      if (this.route.url === '/active' && item[completed] === false  ) {
+      if (route === 'active' && item[completed] === false  ) {
         resultArray.push(item);
       }
-      if (this.route.url === '/completed' && item[completed] === true  ) {
+      if (route === 'completed' && item[completed] === true  ) {
         resultArray.push(item);
       }
     }

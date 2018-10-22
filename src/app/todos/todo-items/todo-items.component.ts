@@ -21,7 +21,7 @@ export class TodoItemsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.todoItems = this.todoItemsService.todoItems;
-    this.data = this.route.snapshot.data.value;
+    this.data = this.route.snapshot.data.path;
 
     this.itemsSub = this.todoItemsService.getUpdateTodoItems()
     .subscribe((items: TodoItems[]) => {

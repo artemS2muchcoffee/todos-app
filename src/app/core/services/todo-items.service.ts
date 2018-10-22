@@ -26,6 +26,11 @@ export class TodoItemsService {
 
   }
 
+  addTodoItem(newItem: any) {
+    this.todoItems.push(newItem);
+    this.updateTodoItems.next([...this.todoItems]);
+  }
+
 
   deleteTodoItemById(id: number) {
     const updateItems = this.todoItems.filter(item => item.id !== id);
