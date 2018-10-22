@@ -22,7 +22,6 @@ export class TodoItemsService {
     .pipe(
       catchError(this.handleError),
       map(itemData => {
-        console.log(itemData);
         const items = [];
         for ( const key in itemData) {
           if (itemData.hasOwnProperty(key)) {
@@ -32,12 +31,10 @@ export class TodoItemsService {
         return items;
       }))
     .subscribe(transformData => {
-      console.log(transformData);
       this.todoItems = transformData;
       this.updateTodoItems.next([...this.todoItems]);
     });
   }
-
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
@@ -48,7 +45,6 @@ export class TodoItemsService {
     console.log(initialState);
     return throwError(error);
   }
-
 
   toggleTodoItemComplete(id: number) {
     const strId = '' + id;
@@ -88,7 +84,6 @@ export class TodoItemsService {
       catchError(this.handleError)
     )
     .subscribe(response => {
-      console.log(response);
       if (response) {
         this.todoItems.push(
           {
@@ -100,7 +95,6 @@ export class TodoItemsService {
       }
     });
   }
-
 
   deleteTodoItemById(id: number) {
     const strId = '' + id;
