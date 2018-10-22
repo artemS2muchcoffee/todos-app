@@ -1,13 +1,13 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { TodosRoutingModule } from '../todos-routing.module';
 
 import { FooterComponent } from './footer.component';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
+    SharedModule,
     TodosRoutingModule
   ],
   declarations: [FooterComponent],
