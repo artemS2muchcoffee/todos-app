@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
 
 import { TODO_ITEMS } from '../mock/mock-todo-items';
 import { TodoItems } from '../models/todo-items';
@@ -9,10 +8,10 @@ import { TodoItems } from '../models/todo-items';
 })
 export class TodoItemsService {
   todoItems: TodoItems[] = TODO_ITEMS;
-  updateTodoItems = new Subject<TodoItems[]>();
 
   toggleTodoItemComplete(id: number) {
-    const updateItems = this.todoItems.map(
+    const updateItems = [...this.todoItems];
+    updateItems.map(
       item => {
         if (item.id === id) {
           item.complete = !item.complete;
@@ -20,25 +19,22 @@ export class TodoItemsService {
         return item;
       }
     );
-
     this.todoItems = updateItems;
-    this.updateTodoItems.next([...this.todoItems]);
-
   }
 
   addTodoItem(newItem: any) {
-    this.todoItems.push(newItem);
-    this.updateTodoItems.next([...this.todoItems]);
+    const updateItems = [...this.todoItems];
+    updateItems.push(
+      {
+        id: newItem.id,
+        title: newItem.title,
+        complete: newItem.complete
+      });
+    this.todoItems = updateItems;
   }
-
 
   deleteTodoItemById(id: number) {
-    const updateItems = this.todoItems.filter(item => item.id !== id);
-    this.todoItems = updateItems;
-    this.updateTodoItems.next([...this.todoItems]);
+    this.todoItems = this.todoItems.filter(item => item.id !== id);
   }
 
-  getUpdateTodoItems() {
-    return this.updateTodoItems.asObservable();
-  }
 }

@@ -13,4 +13,5 @@ import { FooterComponent } from './footer.component';
   declarations: [FooterComponent],
   exports: [FooterComponent]
 })
-export class FooterModule { }
+export class FooterModule {
+}

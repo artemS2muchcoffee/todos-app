@@ -16,4 +16,5 @@ import { TodoItemsComponent } from './todo-items.component';
     FilterTodoItemsPipe
   ],
 })
-export class TodoItemsModule { }
+export class TodoItemsModule {
+}
