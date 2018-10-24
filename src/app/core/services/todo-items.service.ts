@@ -44,33 +44,61 @@ export class TodoItemsService {
       });
   }
 
-
   toggleTodoItemComplete(id: number) {
-    const updateItems = [...this.todoItems];
-    updateItems.map(
-      item => {
-        if (item.id === id) {
-          item.complete = !item.complete;
-        }
-        return item;
+    let updateData;
+    this.todoItems.filter(item => {
+      if (item.id === id) {
+        item.complete = !item.complete;
+        updateData = {
+          id: item.id,
+          title: item.title,
+          complete: item.complete
+        };
       }
-    );
-    this.todoItems = updateItems;
+    });
+    this.http.put(`http://localhost:3000/todo-items/${id}`, updateData)
+      .pipe(
+        catchError(this.handleError)
+      )
+      .subscribe(() => {
+        const updateItemsData = [...this.todoItems];
+        const oldItemIndex = updateItemsData.findIndex(item => item.id === id);
+        updateItemsData[oldItemIndex] = {
+          id: updateData.id,
+          title: updateData.title,
+          complete: updateData.complete
+        };
+        this.todoItems = updateItemsData;
+      });
   }
 
-  addTodoItem(newItem: any) {
-    const updateItems = [...this.todoItems];
-    updateItems.push(
-      {
-        id: newItem.id,
-        title: newItem.title,
-        complete: newItem.complete
+  addTodoItem(newItem) {
+    this.http.post('http://localhost:3000/todo-items', newItem)
+      .pipe(
+        catchError(this.handleError)
+      )
+      .subscribe(response => {
+        const updateItemsData = [...this.todoItems];
+        if (response) {
+          updateItemsData.push(
+            {
+              id: newItem.id,
+              title: newItem.title,
+              complete: newItem.complete
+            });
+        }
+        this.todoItems = updateItemsData;
       });
-    this.todoItems = updateItems;
   }
 
   deleteTodoItemById(id: number) {
-    this.todoItems = this.todoItems.filter(item => item.id !== id);
+    this.http.delete(`http://localhost:3000/todo-items/${id}`)
+      .pipe(
+        catchError(this.handleError)
+      )
+      .subscribe(() => {
+        this.todoItems = this.todoItems.filter(item => item.id !== id);
+      });
   }
 
 
