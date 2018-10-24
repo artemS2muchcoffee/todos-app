@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { TodoItems } from '../../core/models/todo-items';
@@ -9,22 +9,20 @@ import { TodoItemsService } from '../../core/services/todo-items.service';
   templateUrl: './todo-items.component.html',
   styleUrls: ['./todo-items.component.scss']
 })
-export class TodoItemsComponent implements OnInit, DoCheck {
-  todoItems: TodoItems[];
-  data;
+export class TodoItemsComponent implements OnInit {
+  snapShotData: boolean;
 
   constructor(
     private todoItemsService: TodoItemsService,
     private route: ActivatedRoute) {
   }
 
-  ngOnInit() {
-    this.todoItems = this.todoItemsService.todoItems;
-    this.data = this.route.snapshot.data.path;
+  get todoItems(): TodoItems[] {
+    return this.todoItemsService.todoItems;
   }
 
-  ngDoCheck() {
-    this.todoItems = this.todoItemsService.todoItems;
+  ngOnInit() {
+    this.snapShotData = this.route.snapshot.data.complete;
   }
 
   changeTodoItemComplete(itemId: number) {
@@ -34,4 +32,5 @@ export class TodoItemsComponent implements OnInit, DoCheck {
   deleteTodoItemById(itemId: number) {
     this.todoItemsService.deleteTodoItemById(itemId);
   }
+
 }

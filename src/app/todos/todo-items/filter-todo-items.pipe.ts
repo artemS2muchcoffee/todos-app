@@ -7,12 +7,12 @@ import { TodoItems } from '../../core/models/todo-items';
 })
 export class FilterTodoItemsPipe implements PipeTransform {
 
-  transform(value: TodoItems[], route: string): any {
+  transform(value: TodoItems[], route: boolean): any {
     if (!value) {
       return value;
     }
     return value.filter(
-      item => route === '' || route === 'active' && item.complete === false || route === 'completed' && item.complete === true
+      item => route === undefined || route === item.complete
     );
   }
 }
