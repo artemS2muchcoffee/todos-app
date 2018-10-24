@@ -3,16 +3,16 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { TodoItems } from '../../core/models/todo-items';
 
 @Pipe({
-  name: 'filterTodoItemsPipe',
+  name: 'filterTodoItems',
 })
 export class FilterTodoItemsPipe implements PipeTransform {
 
-  transform(value: TodoItems[], route: boolean): any {
-    if (!value) {
+  transform(value: TodoItems[], complete: boolean): any {
+    if (value.length === 0) {
       return value;
     }
     return value.filter(
-      item => route === undefined || route === item.complete
+      item => complete === undefined || complete === item.complete
     );
   }
 }

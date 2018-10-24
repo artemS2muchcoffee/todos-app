@@ -10,7 +10,7 @@ import { TodoItemsService } from '../../core/services/todo-items.service';
   styleUrls: ['./todo-items.component.scss']
 })
 export class TodoItemsComponent implements OnInit {
-  snapShotData: boolean;
+  snapshotIsComplete: boolean;
 
   constructor(
     private todoItemsService: TodoItemsService,
@@ -22,7 +22,7 @@ export class TodoItemsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.snapShotData = this.route.snapshot.data.complete;
+    this.snapshotIsComplete = this.route.snapshot.data.complete;
   }
 
   changeTodoItemComplete(itemId: number) {
