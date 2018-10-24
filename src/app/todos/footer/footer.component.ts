@@ -14,6 +14,9 @@ export class FooterComponent {
   }
 
   get countItems(): number {
+    if (!this.todoItemsService.todoItems) {
+      return;
+    }
     return this.todoItemsService.todoItems.length;
   }
 }

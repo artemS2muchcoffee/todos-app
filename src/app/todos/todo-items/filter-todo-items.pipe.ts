@@ -8,7 +8,7 @@ import { TodoItems } from '../../core/models/todo-items';
 export class FilterTodoItemsPipe implements PipeTransform {
 
   transform(value: TodoItems[], complete: boolean): any {
-    if (value.length === 0) {
+    if (!value) {
       return value;
     }
     return value.filter(
