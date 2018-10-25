@@ -27,7 +27,7 @@ export class TodoItemsService {
   }
 
   fetchTodoItems() {
-    this.http.get('http://localhost:3000/todo-items')
+    this.http.get(`todo-items`)
       .pipe(
         catchError(this.handleError),
         map(responseItemData => {
@@ -56,7 +56,7 @@ export class TodoItemsService {
         };
       }
     });
-    this.http.put(`http://localhost:3000/todo-items/${id}`, updateData)
+    this.http.put(`todo-items/${id}`, updateData)
       .pipe(
         catchError(this.handleError)
       )
@@ -73,7 +73,7 @@ export class TodoItemsService {
   }
 
   addTodoItem(newItem) {
-    this.http.post('http://localhost:3000/todo-items', newItem)
+    this.http.post('todo-items', newItem)
       .pipe(
         catchError(this.handleError)
       )
@@ -92,7 +92,7 @@ export class TodoItemsService {
   }
 
   deleteTodoItemById(id: number) {
-    this.http.delete(`http://localhost:3000/todo-items/${id}`)
+    this.http.delete(`todo-items/${id}`)
       .pipe(
         catchError(this.handleError)
       )
