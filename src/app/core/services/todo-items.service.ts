@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject, throwError } from 'rxjs';
-import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Subject, throwError } from 'rxjs';
+import { catchError, map, mapTo, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { TodoItems } from '../models/todo-items';
 
@@ -9,7 +9,7 @@ import { TodoItems } from '../models/todo-items';
   providedIn: 'root',
 })
 export class TodoItemsService {
-  todoItems: TodoItems[];
+  todoItems$ = new BehaviorSubject<TodoItems[]>(null);
 
   addTodoItem$ = new Subject<TodoItems[]>();
   fetchTodoItems$ = new Subject<TodoItems[]>();
@@ -38,21 +38,27 @@ export class TodoItemsService {
               ))
         ),
         catchError(this.handleError),
+        withLatestFrom(this.todoItems$),
+        map(([todoItem]) => {
+          return todoItem;
+        })
       )
-      .subscribe(transformData => {
-        this.todoItems = transformData;
-      });
+      .subscribe(
+        this.todoItems$
+      );
 
     this.addTodoItem$
       .pipe(
         switchMap((newTodoItem) => {
           return this.http.post<TodoItems>(`todo-items`, newTodoItem);
         }),
-        catchError(this.handleError)
+        catchError(this.handleError),
+        withLatestFrom(this.todoItems$),
+        map(([todoItem, todoItems]) => {
+          return todoItems.concat(todoItem);
+        })
       )
-      .subscribe((todoItem) => {
-        this.todoItems = this.todoItems.concat(todoItem);
-      });
+      .subscribe(this.todoItems$);
 
     this.deleteTodoItem$
       .pipe(
@@ -60,17 +66,21 @@ export class TodoItemsService {
           return this.http.delete<TodoItems>(`todo-items/${itemId}`)
             .pipe(mapTo(itemId));
         }),
-        catchError(this.handleError)
+        catchError(this.handleError),
+        withLatestFrom(this.todoItems$),
+        map(([todoItemId, todoItems]) => {
+          return todoItems.filter(item => item.id !== todoItemId);
+        })
       )
-      .subscribe((itemId) => {
-        this.todoItems = this.todoItems.filter(item => item.id !== itemId);
-      });
+      .subscribe(
+        this.todoItems$
+      );
 
     this.toggleTodoItemComplete$
       .pipe(
         switchMap((itemId) => {
           let updateData;
-          this.todoItems.filter(item => {
+          this.todoItems$.value.filter(item => {
             if (item.id === itemId) {
               item.complete = !item.complete;
               updateData = {
@@ -81,22 +91,21 @@ export class TodoItemsService {
             }
           });
           return this.http.put<TodoItems>(`todo-items/${itemId}`, updateData);
-
         }),
         catchError(this.handleError),
+        withLatestFrom(this.todoItems$),
+        map(([todoItem, todoItems]) => {
+          const isUpdated = Object.values(todoItem);
+          const oldItemIndex = todoItems.findIndex(items => items.id === isUpdated[0]);
+          todoItems[oldItemIndex] = {
+            id: isUpdated[0],
+            title: isUpdated[1],
+            complete: isUpdated[2]
+          };
+          return todoItems;
+        })
       )
-      .subscribe((item) => {
-        const isUpdated = Object.values(item);
-        const updateItemsData = [...this.todoItems];
-        const oldItemIndex = updateItemsData.findIndex(items => items.id === isUpdated[0]);
-        updateItemsData[oldItemIndex] = {
-          id: isUpdated[0],
-          title: isUpdated[1],
-          complete: isUpdated[2]
-        };
-        this.todoItems = updateItemsData;
-      });
-
+      .subscribe(this.todoItems$);
 
   }
 
