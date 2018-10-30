@@ -9,7 +9,7 @@ import { TodoItems } from '../models/todo-items';
   providedIn: 'root',
 })
 export class TodoItemsService {
-  todoItems$ = new BehaviorSubject<TodoItems[]>(null);
+  todoItems$: BehaviorSubject<TodoItems[]> = new BehaviorSubject<TodoItems[]>([]);
 
   addTodoItem$ = new Subject<TodoItems[]>();
   fetchTodoItems$ = new Subject<TodoItems[]>();
@@ -24,18 +24,7 @@ export class TodoItemsService {
     this.fetchTodoItems$
       .pipe(
         switchMap(() =>
-          this.http.get<TodoItems>(`todo-items`)
-            .pipe(
-              map(responseItemData => {
-                  const items = [];
-                  for (const key in responseItemData) {
-                    if (responseItemData.hasOwnProperty(key)) {
-                      items.push({...responseItemData[key]});
-                    }
-                  }
-                  return items;
-                }
-              ))
+          this.http.get<TodoItems[]>(`todo-items`)
         ),
         catchError(this.handleError),
         withLatestFrom(this.todoItems$),
@@ -50,27 +39,31 @@ export class TodoItemsService {
     this.addTodoItem$
       .pipe(
         switchMap((newTodoItem) => {
-          return this.http.post<TodoItems>(`todo-items`, newTodoItem);
-        }),
+            return this.http.post<TodoItems>(`todo-items`, newTodoItem);
+          }
+        ),
         catchError(this.handleError),
         withLatestFrom(this.todoItems$),
         map(([todoItem, todoItems]) => {
-          return todoItems.concat(todoItem);
-        })
+            return todoItems.concat(todoItem);
+          }
+        )
       )
       .subscribe(this.todoItems$);
 
     this.deleteTodoItem$
       .pipe(
-        switchMap((itemId) => {
-          return this.http.delete<TodoItems>(`todo-items/${itemId}`)
-            .pipe(mapTo(itemId));
-        }),
+        switchMap((id) => {
+            return this.http.delete(`todo-items/${id}`)
+              .pipe(mapTo(id));
+          }
+        ),
         catchError(this.handleError),
         withLatestFrom(this.todoItems$),
-        map(([todoItemId, todoItems]) => {
-          return todoItems.filter(item => item.id !== todoItemId);
-        })
+        map(([id, todoItems]) => {
+            return todoItems.filter(item => item.id !== id);
+          }
+        )
       )
       .subscribe(
         this.todoItems$
@@ -78,32 +71,21 @@ export class TodoItemsService {
 
     this.toggleTodoItemComplete$
       .pipe(
-        switchMap((itemId) => {
-          let updateData;
-          this.todoItems$.value.filter(item => {
-            if (item.id === itemId) {
-              item.complete = !item.complete;
-              updateData = {
-                id: item.id,
-                title: item.title,
-                complete: item.complete
-              };
-            }
-          });
-          return this.http.put<TodoItems>(`todo-items/${itemId}`, updateData);
-        }),
+        switchMap((id) => {
+            const updateData = this.todoItems$.value.filter(item =>
+              item.id === id
+            );
+            updateData[0].complete = !updateData[0].complete;
+            return this.http.put<TodoItems>(`todo-items/${id}`, updateData[0]);
+          }
+        ),
         catchError(this.handleError),
         withLatestFrom(this.todoItems$),
         map(([todoItem, todoItems]) => {
-          const isUpdated = Object.values(todoItem);
-          const oldItemIndex = todoItems.findIndex(items => items.id === isUpdated[0]);
-          todoItems[oldItemIndex] = {
-            id: isUpdated[0],
-            title: isUpdated[1],
-            complete: isUpdated[2]
-          };
-          return todoItems;
-        })
+            todoItems.splice(todoItems.findIndex(items => items.id === todoItem.id), 1, todoItem);
+            return todoItems;
+          }
+        )
       )
       .subscribe(this.todoItems$);
 
@@ -123,16 +105,16 @@ export class TodoItemsService {
     this.fetchTodoItems$.next();
   }
 
-  toggleTodoItemComplete(itemId) {
-    this.toggleTodoItemComplete$.next(itemId);
+  toggleTodoItemComplete(id: number) {
+    this.toggleTodoItemComplete$.next(id);
   }
 
   addTodoItem(newTodoItem) {
     this.addTodoItem$.next(newTodoItem);
   }
 
-  deleteTodoItemById(itemId) {
-    this.deleteTodoItem$.next(itemId);
+  deleteTodoItemById(id: number) {
+    this.deleteTodoItem$.next(id);
   }
 
 

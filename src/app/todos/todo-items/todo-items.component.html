@@ -1,7 +1,7 @@
 <ul>
-  <li *ngFor="let items of todoItems$ | async">
-    <input type="checkbox" [checked]="items.complete" (click)="changeTodoItemComplete(items.id)">
-    <span>{{items.id}} </span> {{items.title}}
-    <button class="btn-delete" type="button" (click)="deleteTodoItemById(items.id)">Delete Item</button>
+  <li *ngFor="let item of todoItems$ | async">
+    <input type="checkbox" [checked]="item.complete" (click)="changeTodoItemComplete(item.id)">
+    <span>{{item.id}} </span> {{item.title}}
+    <button class="btn-delete" type="button" (click)="deleteTodoItemById(item.id)">Delete Item</button>
   </li>
 </ul>
