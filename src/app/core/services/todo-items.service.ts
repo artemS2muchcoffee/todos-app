@@ -19,75 +19,61 @@ export class TodoItemsService {
 
   constructor(
     private http: HttpClient) {
-    this.fetchTodoItems();
 
     this.fetchTodoItems$
       .pipe(
-        switchMap(() =>
-          this.http.get<TodoItems[]>(`todo-items`)
+        switchMap(
+          () => this.http.get<TodoItems[]>(`todo-items`)
         ),
-        catchError(this.handleError),
-        withLatestFrom(this.todoItems$),
-        map(([todoItem]) => {
-          return todoItem;
-        })
+        catchError(this.handleError)
       )
-      .subscribe(
-        this.todoItems$
-      );
+      .subscribe(this.todoItems$);
 
     this.addTodoItem$
       .pipe(
         switchMap((newTodoItem) => {
-            return this.http.post<TodoItems>(`todo-items`, newTodoItem);
-          }
-        ),
+          return this.http.post<TodoItems>(`todo-items`, newTodoItem);
+        }),
         catchError(this.handleError),
         withLatestFrom(this.todoItems$),
         map(([todoItem, todoItems]) => {
-            return todoItems.concat(todoItem);
-          }
-        )
+          return todoItems.concat(todoItem);
+        })
       )
       .subscribe(this.todoItems$);
 
     this.deleteTodoItem$
       .pipe(
         switchMap((id) => {
-            return this.http.delete(`todo-items/${id}`)
-              .pipe(mapTo(id));
+            return this.http.delete(`todo-items/${id}`).pipe(mapTo(id));
           }
         ),
         catchError(this.handleError),
         withLatestFrom(this.todoItems$),
         map(([id, todoItems]) => {
-            return todoItems.filter(item => item.id !== id);
-          }
-        )
-      )
-      .subscribe(
-        this.todoItems$
-      );
-
-    this.toggleTodoItemComplete$
-      .pipe(
-        switchMap((id) => {
-            const updateData = this.todoItems$.value.filter(item =>
-              item.id === id
-            );
-            updateData[0].complete = !updateData[0].complete;
-            return this.http.put<TodoItems>(`todo-items/${id}`, updateData[0]);
-          }
-        ),
-        catchError(this.handleError),
-        withLatestFrom(this.todoItems$),
-        map(([todoItem, todoItems]) => {
-            todoItems.splice(todoItems.findIndex(items => items.id === todoItem.id), 1, todoItem);
-            return todoItems;
-          }
-        )
+          return todoItems.filter(item => item.id !== id);
+        })
       )
       .subscribe(this.todoItems$);
+
+    this.toggleTodoItemComplete$.pipe(
+      switchMap((id) => {
+          const updateData = this.todoItems$.value.find(item =>
+            item.id === id
+          );
+          updateData.complete = !updateData.complete;
+          return this.http.put<TodoItems>(`todo-items/${id}`, updateData);
+        }
+      ),
+      catchError(this.handleError),
+      withLatestFrom(this.todoItems$),
+      map(([todoItem, todoItems]) => {
+          const itemIndex = todoItems.findIndex(items => items.id === todoItem.id);
+          todoItems.splice(itemIndex, 1, todoItem);
+          return todoItems;
+        }
+      )
+    ).subscribe(this.todoItems$);
 
   }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { combineLatest, map } from 'rxjs/operators';
 
 import { TodoItems } from '../../core/models/todo-items';
 import { TodoItemsService } from '../../core/services/todo-items.service';
@@ -20,18 +20,20 @@ export class TodoItemsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.todoItemsService.fetchTodoItems();
 
     this.todoItems$ = this.todoItemsService.todoItems$
       .pipe(
-        withLatestFrom(this.route.data),
-        map(
-          ([items, complete]) => {
-            return items.filter(
-              item => complete['complete'] === undefined || complete['complete'] === item.complete
-            );
-          }
-        )
+        combineLatest(
+          this.route.data
+            .pipe(map(
+              data => data.complete
+            ))
+        ),
+        map(([items, complete]) => {
+          return items.filter(
+            item => complete === undefined || complete === item.complete
+          );
+        })
       );
 
   }
