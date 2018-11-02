@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 
 import { TodoItems } from '../../core/models/todo-items';
-import { TodoItemsService } from '../../core/services/todo-items.service';
 
 @Component({
   selector: 'app-footer',
@@ -13,11 +13,11 @@ export class FooterComponent implements OnInit {
   todoItems$: Observable<TodoItems[]>;
 
   constructor(
-    private todoItemsService: TodoItemsService) {
+    private store: Store) {
   }
 
   ngOnInit() {
-    this.todoItems$ = this.todoItemsService.todoItems$;
+    this.todoItems$ = this.store.select(state => state.todoItems.todoItems);
   }
 
 }

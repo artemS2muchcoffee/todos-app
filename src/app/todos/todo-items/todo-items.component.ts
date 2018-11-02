@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { combineLatest, map } from 'rxjs/operators';
 
 import { TodoItems } from '../../core/models/todo-items';
 import { TodoItemsService } from '../../core/services/todo-items.service';
+import { DeleteTodoItem, ToggleTodoItemsComplete } from '../../shared/actions/todo-items.actions';
 
 @Component({
   selector: 'app-todo-items',
@@ -16,36 +18,36 @@ export class TodoItemsComponent implements OnInit {
 
   constructor(
     private todoItemsService: TodoItemsService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private store: Store) {
+
   }
 
   ngOnInit() {
-
-    this.todoItems$ = this.todoItemsService.todoItems$
-      .pipe(
-        combineLatest(
-          this.route.data
-            .pipe(map(
-              data => data.complete
-            ))
-        ),
-        map(([items, complete]) => {
-          return items.filter(
-            item => complete === undefined || complete === item.complete
-          );
-        })
-      );
+    this.todoItems$ = this.store.select(state => state.todoItems.todoItems)
+    .pipe(
+      combineLatest(
+        this.route.data
+        .pipe(map(
+          data => data.complete
+        ))
+      ),
+      map(([items, complete]) => {
+        return items.filter(
+          item => complete === undefined || complete === item.complete
+        );
+      })
+    );
 
   }
 
-  changeTodoItemComplete(id: number) {
-    this.todoItemsService.toggleTodoItemComplete(id);
+  changeTodoItemComplete(item: TodoItems) {
+    this.store.dispatch(new ToggleTodoItemsComplete(item));
   }
 
-  deleteTodoItemById(id: number) {
-    this.todoItemsService.deleteTodoItemById(id);
+  deleteTodoItemById(item: TodoItems) {
+    this.store.dispatch(new DeleteTodoItem(item));
   }
-
 
 }
 
