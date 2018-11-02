@@ -56,7 +56,7 @@ export class TodoItemsState {
   }
 
   @Action(todoItemsAction.FetchTodoItemFailed)
-  loadPizzasFail(
+  fetchTodoItemFailed(
     {dispatch}: StateContext<TodoItemsStateModel>
   ) {
     dispatch({loaded: false, loading: false});
