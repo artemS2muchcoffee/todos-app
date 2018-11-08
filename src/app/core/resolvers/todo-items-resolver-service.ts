@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Store } from '@ngxs/store';
 
-import { FetchTodoItems } from '../../shared/actions/todo-items.actions';
+import { FetchTodoItems } from '../../ngxs/todos/todo-items.actions';
 import { TodoItemsService } from '../services/todo-items.service';
 
 @Injectable({

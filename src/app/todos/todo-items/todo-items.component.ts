@@ -6,7 +6,7 @@ import { combineLatest, map } from 'rxjs/operators';
 
 import { TodoItems } from '../../core/models/todo-items';
 import { TodoItemsService } from '../../core/services/todo-items.service';
-import { DeleteTodoItem, ToggleTodoItemsComplete } from '../../shared/actions/todo-items.actions';
+import { DeleteTodoItem, ToggleTodoItemsComplete } from '../../ngxs/todos/todo-items.actions';
 
 @Component({
   selector: 'app-todo-items',
@@ -33,8 +33,9 @@ export class TodoItemsComponent implements OnInit {
         ))
       ),
       map(([items, complete]) => {
-        return items.filter(
-          item => complete === undefined || complete === item.complete
+        console.log(Object.keys(items));
+        return Object.values(items).filter(
+          (item: TodoItems) => complete === undefined || complete === item.complete
         );
       })
     );

@@ -1,3 +1,22 @@
 li {
   list-style-type: none;
 }
+.row {
+  display: flex;
+  margin: 10px;
+}
+.column-one {
+  flex: 70%;
+}
+.column-two {
+  flex: 30%;
+}
+.btn-delete {
+  padding: 5px;
+  background-color: #dc3545;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}

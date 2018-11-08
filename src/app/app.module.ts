@@ -7,8 +7,8 @@ import { NgxsModule } from '@ngxs/store';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
+import { TodoItemsState } from './ngxs/todos/todo-items.state';
 import { SharedModule } from './shared/shared.module';
-import { TodoItemsState } from './shared/state/todo-items.state';
 
 @NgModule({
   declarations: [

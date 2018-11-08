@@ -1,20 +1,26 @@
 import { Action, State, StateContext } from '@ngxs/store';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { TodoItems } from '../../core/models/todo-items';
 import { TodoItemsService } from '../../core/services/todo-items.service';
-import * as   todoItemsAction from '../actions/todo-items.actions';
+
+import * as   todoItemsAction from './todo-items.actions';
 
 export interface TodoItemsStateModel {
-  todoItems: TodoItems[];
+  todoItems: {
+    [id: number]: TodoItems
+  };
+  todoItemsIds: {};
   loaded: boolean;
   loading: boolean;
 }
 
+
 @State<TodoItemsStateModel>({
   name: 'todoItems',
   defaults: {
-    todoItems: [],
+    todoItems: {},
+    todoItemsIds: [],
     loaded: false,
     loading: false,
   }
@@ -48,7 +54,11 @@ export class TodoItemsState {
   ) {
     patchState(
       {
-        todoItems: payload,
+        todoItems: payload.reduce((items, currentItem) => ({
+          ...items,
+          [currentItem.id]: currentItem
+        }), {}),
+        todoItemsIds: payload.map(item => item.id),
         loaded: true,
         loading: false
       }
@@ -85,13 +95,13 @@ export class TodoItemsState {
     {getState, patchState}: StateContext<TodoItemsStateModel>,
     {payload}: todoItemsAction.AddTodoItemSuccessfully
   ) {
-    patchState(
-      {
-        todoItems: getState().todoItems.concat(payload),
-        loaded: true,
-        loading: false
-      }
-    );
+    // patchState(
+    //   {
+    //     todoItems: getState().todoItems.concat(payload),
+    //     loaded: true,
+    //     loading: false
+    //   }
+    // );
   }
 
   @Action(todoItemsAction.AddTodoItemFailed)
@@ -111,7 +121,7 @@ export class TodoItemsState {
     return this.todoItemsService.deleteTodoItemById(payload)
     .pipe(
       tap(
-        items => dispatch(new todoItemsAction.DeleteTodoItemSuccessfully(payload))
+        () => dispatch(new todoItemsAction.DeleteTodoItemSuccessfully(payload))
       ),
       catchError(
         error => dispatch(new todoItemsAction.DeleteTodoItemFailed(error))
@@ -126,7 +136,7 @@ export class TodoItemsState {
   ) {
     patchState(
       {
-        todoItems: getState().todoItems.filter(item => item.id !== payload.id),
+        // todoItems: getState().todoItems.filter(item => item.id !== payload.id),
         loaded: true,
         loading: false
       }
@@ -166,14 +176,14 @@ export class TodoItemsState {
   ) {
     patchState(
       {
-        todoItems: getState().todoItems.map(
-          item => {
-            if (item.id === payload.id) {
-              item.complete = payload.complete;
-            }
-            return item;
-          }
-        ),
+        // todoItems: getState().todoItems.map(
+        //   item => {
+        //     if (item.id === payload.id) {
+        //       item.complete = payload.complete;
+        //     }
+        //     return item;
+        //   }
+        // ),
         loaded: true,
         loading: false
       }

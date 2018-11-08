@@ -3,7 +3,7 @@ import { Store } from '@ngxs/store';
 
 import { TodoItems } from '../../core/models/todo-items';
 import { TodoItemsService } from '../../core/services/todo-items.service';
-import { AddTodoItem } from '../../shared/actions/todo-items.actions';
+import { AddTodoItem } from '../../ngxs/todos/todo-items.actions';
 
 @Component({
   selector: 'app-header',

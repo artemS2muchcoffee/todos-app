@@ -1,6 +1,11 @@
-nav {
-  float: right;
+.row {
+  display: flex;
+  margin: 10px;
 }
+.column {
+  flex: 50%;
+}
+
 ul>li {
   display: inline-block;
 }
@@ -8,8 +13,10 @@ li {
   margin-left: 10px;
 }
 a {
+  color: black;
+  text-decoration: none;
   cursor: pointer;
 }
-.items {
-  float: left;
+.active-link {
+  color: burlywood;
 }
