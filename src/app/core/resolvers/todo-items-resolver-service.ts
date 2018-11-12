@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { Store } from '@ngxs/store';
 
-import { FetchTodoItems } from '../../ngxs/todos/todo-items.actions';
 import { TodoItemsService } from '../services/todo-items.service';
 
 @Injectable({
@@ -10,14 +8,14 @@ import { TodoItemsService } from '../services/todo-items.service';
 })
 export class TodoItemsResolverService implements Resolve<void> {
   constructor(
-    private todoItemsService: TodoItemsService,
-    private store: Store) {
+    private todoItemsService: TodoItemsService
+  ) {
   }
 
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {
-    this.store.dispatch(new FetchTodoItems());
+    this.todoItemsService.FetchTodoItems();
   }
 }

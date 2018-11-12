@@ -1,56 +1,43 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
 
-import { TodoItems } from '../models/todo-items';
+import {
+  AddTodoItem,
+  DeleteTodoItem, FetchTodoItems,
+  ToggleTodoItemsComplete
+} from '../../ngxs/todo-items/todo-items.actions';
+import { TodoItemsState } from '../../ngxs/todo-items/todo-items.state';
+import { TodoItem } from '../models/todo-item';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodoItemsService {
+  @Select(TodoItemsState.getTodoItems) todoItems$: Observable<TodoItem[]>;
+  @Select(TodoItemsState.getTodoItemsIdsCount) count$: Observable<number>;
 
   constructor(
-    private http: HttpClient) {
+    private store: Store
+  ) {
   }
 
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'An unknown error occurred!';
-    if (error.message) {
-      errorMessage = error.message;
-    }
-    const initialState = {message: errorMessage};
-    console.error(initialState);
-    return throwError(error);
+  FetchTodoItems() {
+    this.store.dispatch(new FetchTodoItems());
   }
 
-  fetchTodoItems() {
-    return this.http.get<TodoItems[]>(`todo-items`)
-    .pipe(
-      catchError(this.handleError)
-    );
+  AddTodoItem(todoItem: TodoItem) {
+    this.store.dispatch(new AddTodoItem(todoItem));
   }
 
-  addTodoItem(payload: TodoItems) {
-    return this.http.post<TodoItems>(`todo-items`, payload)
-    .pipe(
-      catchError(this.handleError)
-    );
+  ToggleTodoItemsComplete(id: number) {
+    this.store.dispatch(new ToggleTodoItemsComplete(id));
   }
 
-  toggleTodoItemComplete(payload: TodoItems) {
-    return this.http.put<TodoItems>(`todo-items/${payload.id}`, payload)
-    .pipe(
-      catchError(this.handleError)
-    );
+  DeleteTodoItem(id: number) {
+    this.store.dispatch(new DeleteTodoItem(id));
   }
 
-  deleteTodoItemById(payload: TodoItems) {
-    return this.http.delete(`todo-items/${payload.id}`)
-    .pipe(
-      catchError(this.handleError)
-    );
-  }
 
 }
 

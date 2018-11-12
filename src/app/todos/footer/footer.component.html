@@ -1,7 +1,7 @@
 <div class="row">
   <div class="column">
-    <div class="items" *ngIf="todoItems$ | async as todoItems">
-      <p>Titles: <span>{{todoItems.length}}</span></p>
+    <div class="items" *ngIf="count$ | async as count">
+      <p>Titles: <span>{{count}}</span></p>
     </div>
   </div>
   <div class="column">

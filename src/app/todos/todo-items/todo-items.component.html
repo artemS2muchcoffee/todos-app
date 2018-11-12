@@ -1,11 +1,11 @@
 <ul>
   <li class="row" *ngFor="let item of todoItems$ | async">
     <div class="column-one">
-      <input type="checkbox" [checked]="item.complete" (click)="changeTodoItemComplete(item)">
+      <input type="checkbox" [checked]="item.complete" (click)="changeTodoItemComplete(item.id)">
       <span>{{item.id}} </span> {{item.title}}
     </div>
     <div class="column-two">
-      <button class="btn-delete" type="button" (click)="deleteTodoItemById(item)">Delete Item</button>
+      <button class="btn-delete" type="button" (click)="deleteTodoItemById(item.id)">Delete Item</button>
     </div>
   </li>
 </ul>

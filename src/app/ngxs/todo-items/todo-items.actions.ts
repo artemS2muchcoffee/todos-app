@@ -1,4 +1,4 @@
-import { TodoItems } from '../../core/models/todo-items';
+import { TodoItem } from '../../core/models/todo-item';
 
 
 export class FetchTodoItems {
@@ -8,14 +8,18 @@ export class FetchTodoItems {
 export class FetchTodoItemSuccessfully {
   static readonly type = '[Todo Items] Fetch Todo Item Successfully';
 
-  constructor(public readonly payload: TodoItems[]) {
+  constructor(
+    public readonly payload: TodoItem[]
+  ) {
   }
 }
 
 export class FetchTodoItemFailed {
   static readonly type = '[Todo Items] Fetch Todo Item Failed';
 
-  constructor(public readonly payload: any) {
+  constructor(
+    public readonly payload: any
+  ) {
   }
 }
 
@@ -23,43 +27,53 @@ export class FetchTodoItemFailed {
 export class AddTodoItem {
   static readonly type = '[Header] Add Todo Item';
 
-  constructor(public readonly payload: TodoItems) {
+  constructor(
+    public readonly payload: TodoItem
+  ) {
   }
 }
 
 export class AddTodoItemSuccessfully {
   static readonly type = '[Todo Items] Add Todo Item Successfully';
 
-  constructor(public readonly payload: TodoItems) {
+  constructor(
+    public readonly payload: TodoItem
+  ) {
   }
 }
 
 export class AddTodoItemFailed {
   static readonly type = '[Todo Items State] Add Todo Item Failed';
 
-  constructor(public readonly payload: any) {
+  constructor(
+    public readonly payload: any
+  ) {
   }
 }
-
-
 export class DeleteTodoItem {
   static readonly type = '[Todo Items] Delete Todo Item';
 
-  constructor(public readonly payload: TodoItems) {
+  constructor(
+    public readonly payload: number
+  ) {
   }
 }
 
 export class DeleteTodoItemSuccessfully {
   static readonly type = '[Todo Items] Delete Todo Item Successfully';
 
-  constructor(public readonly payload: TodoItems) {
+  constructor(
+    public readonly payload: number
+  ) {
   }
 }
 
 export class DeleteTodoItemFailed {
   static readonly type = '[Todo Items] Delete Todo Item Failed';
 
-  constructor(public readonly payload: any) {
+  constructor(
+    public readonly payload: any
+  ) {
   }
 }
 
@@ -67,14 +81,14 @@ export class DeleteTodoItemFailed {
 export class ToggleTodoItemsComplete {
   static readonly type = '[Todo Items] Toggle Todo Item Complete';
 
-  constructor(public readonly payload: TodoItems) {
+  constructor(public readonly payload: number) {
   }
 }
 
 export class ToggleTodoItemCompleteSuccessfully {
   static readonly type = '[Todo Items] Toggle Todo Item Complete Successfully';
 
-  constructor(public readonly payload: TodoItems) {
+  constructor(public readonly payload: TodoItem) {
   }
 }
 

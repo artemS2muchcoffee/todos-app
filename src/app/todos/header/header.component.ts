@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { Store } from '@ngxs/store';
 
-import { TodoItems } from '../../core/models/todo-items';
+import { TodoItem } from '../../core/models/todo-item';
 import { TodoItemsService } from '../../core/services/todo-items.service';
-import { AddTodoItem } from '../../ngxs/todos/todo-items.actions';
 
 @Component({
   selector: 'app-header',
@@ -11,19 +9,19 @@ import { AddTodoItem } from '../../ngxs/todos/todo-items.actions';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  newTodoItem: TodoItems;
+  newTodoItem: TodoItem;
   clearValue = '';
 
   constructor(
-    private todoItemService: TodoItemsService,
-    private store: Store) {
+    private todoItemService: TodoItemsService
+  ) {
   }
 
   addTodoItem(value: string) {
-    this.newTodoItem = new TodoItems();
+    this.newTodoItem = new TodoItem();
     if (value) {
       this.newTodoItem.title = value;
-      this.store.dispatch(new AddTodoItem(this.newTodoItem));
+      this.todoItemService.AddTodoItem(this.newTodoItem);
       this.clearValue = '';
     }
   }
