@@ -22,19 +22,19 @@ export class TodoItemsService {
   ) {
   }
 
-  FetchTodoItems() {
+  fetchTodoItems() {
     this.store.dispatch(new FetchTodoItems());
   }
 
-  AddTodoItem(todoItem: TodoItem) {
+  addTodoItem(todoItem: TodoItem) {
     this.store.dispatch(new AddTodoItem(todoItem));
   }
 
-  ToggleTodoItemsComplete(id: number) {
+  toggleTodoItemsComplete(id: number) {
     this.store.dispatch(new ToggleTodoItemsComplete(id));
   }
 
-  DeleteTodoItem(id: number) {
+  deleteTodoItem(id: number) {
     this.store.dispatch(new DeleteTodoItem(id));
   }
 

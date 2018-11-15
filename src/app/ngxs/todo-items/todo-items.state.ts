@@ -4,7 +4,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { TodoItem } from '../../core/models/todo-item';
 import { TodoItemsRequestsService } from '../../core/services/todo-items-requests.service';
 
-import * as   todoItemsAction from './todo-items.actions';
+import * as todoItemsAction from './todo-items.actions';
 
 export interface TodoItemsStateModel {
   todoItems: {
@@ -91,14 +91,14 @@ export class TodoItemsState {
     {getState, patchState, setState}: StateContext<TodoItemsStateModel>,
     {payload: todoItem}: todoItemsAction.AddTodoItemSuccessfully
   ) {
-    const todoItemsState = getState().todoItems;
+    const state = getState();
     patchState(
       {
         todoItems: [todoItem].reduce((item, currentItem) => ({
           ...item,
           [currentItem.id]: currentItem
-        }), todoItemsState),
-        todoItemsIds: getState().todoItemsIds.concat(todoItem.id)
+        }), state.todoItems),
+        todoItemsIds: state.todoItemsIds.concat(todoItem.id)
       }
     );
   }
@@ -124,9 +124,10 @@ export class TodoItemsState {
     {getState, patchState, setState}: StateContext<TodoItemsStateModel>,
     {payload: id}: todoItemsAction.DeleteTodoItemSuccessfully
   ) {
+    const state = getState();
     patchState(
       {
-        todoItemsIds: getState().todoItemsIds.filter(itemIds => itemIds !== id)
+        todoItemsIds: state.todoItemsIds.filter(itemIds => itemIds !== id)
       }
     );
   }
@@ -136,7 +137,8 @@ export class TodoItemsState {
     {patchState, dispatch, getState}: StateContext<TodoItemsStateModel>,
     {payload: id}: todoItemsAction.ToggleTodoItemsComplete
   ) {
-    const todoItem = getState().todoItems[id];
+    const state = getState();
+    const todoItem = {...state.todoItems[id]};
     todoItem.complete = !todoItem.complete;
     return this.todoItemsRequestsService.toggleTodoItemComplete(todoItem)
     .pipe(
@@ -151,11 +153,15 @@ export class TodoItemsState {
 
   @Action(todoItemsAction.ToggleTodoItemCompleteSuccessfully)
   toggleTodoItemSuccessfully(
-    {getState, patchState}: StateContext<TodoItemsStateModel>
+    {getState, patchState}: StateContext<TodoItemsStateModel>,
+    {payload: todoItem}: todoItemsAction.ToggleTodoItemCompleteSuccessfully
   ) {
+    const state = getState();
+    const todoItemState = state.todoItems[todoItem.id];
+    todoItemState.complete = todoItem.complete;
     patchState(
       {
-        todoItems: getState().todoItems
+        todoItems: state.todoItems
       }
     );
   }

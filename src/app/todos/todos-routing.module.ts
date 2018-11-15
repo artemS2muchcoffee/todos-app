@@ -10,7 +10,11 @@ const todosRoutes: Routes = [
   {
     path: '', component: TodosComponent,
     children: [
-      {path: '', loadChildren: './todo-items/todo-items.module#TodoItemsModule', resolve: {server: TodoItemsResolverService}}
+      {
+        path: '',
+        loadChildren: './todo-items/todo-items.module#TodoItemsModule',
+        resolve: {server: TodoItemsResolverService}
+      }
     ]
   },
 ];

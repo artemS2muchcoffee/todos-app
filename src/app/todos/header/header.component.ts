@@ -21,7 +21,7 @@ export class HeaderComponent {
     this.newTodoItem = new TodoItem();
     if (value) {
       this.newTodoItem.title = value;
-      this.todoItemService.AddTodoItem(this.newTodoItem);
+      this.todoItemService.addTodoItem(this.newTodoItem);
       this.clearValue = '';
     }
   }

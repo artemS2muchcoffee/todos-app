@@ -1,3 +1,5 @@
+import { HttpErrorResponse } from '@angular/common/http';
+
 import { TodoItem } from '../../core/models/todo-item';
 
 
@@ -18,7 +20,7 @@ export class FetchTodoItemFailed {
   static readonly type = '[Todo Items] Fetch Todo Item Failed';
 
   constructor(
-    public readonly payload: any
+    public readonly payload: HttpErrorResponse
   ) {
   }
 }
@@ -46,7 +48,7 @@ export class AddTodoItemFailed {
   static readonly type = '[Todo Items State] Add Todo Item Failed';
 
   constructor(
-    public readonly payload: any
+    public readonly payload: HttpErrorResponse
   ) {
   }
 }
@@ -72,7 +74,7 @@ export class DeleteTodoItemFailed {
   static readonly type = '[Todo Items] Delete Todo Item Failed';
 
   constructor(
-    public readonly payload: any
+    public readonly payload: HttpErrorResponse
   ) {
   }
 }
@@ -95,6 +97,6 @@ export class ToggleTodoItemCompleteSuccessfully {
 export class ToggleTodoItemCompleteFailed {
   static readonly type = '[Todo Items] Toggle Todo Item Complete Failed';
 
-  constructor(public readonly payload: any) {
+  constructor(public readonly payload: HttpErrorResponse) {
   }
 }
