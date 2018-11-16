@@ -179,7 +179,7 @@ export class TodoItemsState {
       errorMessage = error.message;
     }
     const initialState = {message: errorMessage};
-    dispatch(console.error(initialState));
+    console.error(initialState);
   }
 
 }

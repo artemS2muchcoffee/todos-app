@@ -13,7 +13,7 @@ import { TodoItemsService } from '../../core/services/todo-items.service';
 })
 export class TodoItemsComponent implements OnInit {
   todoItems$: Observable<TodoItem[]>;
-  stateTodoItems = false;
+  stateTodoItems = '';
 
   constructor(
     private todoItemsService: TodoItemsService,
@@ -32,9 +32,9 @@ export class TodoItemsComponent implements OnInit {
     .pipe(
       map(([items, complete]) => {
         if (!items.length) {
-          this.stateTodoItems = true;
+          this.stateTodoItems = 'Empty todoItems array';
         } else {
-          this.stateTodoItems = false;
+          this.stateTodoItems = '';
         }
         return items.filter(
           (item: TodoItem) => complete === undefined || complete === item.complete

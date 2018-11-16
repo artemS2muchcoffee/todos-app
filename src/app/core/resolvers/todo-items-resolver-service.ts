@@ -5,6 +5,7 @@ import { Actions, ofActionDispatched } from '@ngxs/store';
 import { map, take } from 'rxjs/operators';
 
 import { FetchTodoItemFailed, FetchTodoItemSuccessfully } from '../../ngxs/todo-items/todo-items.actions';
+import { TodoItemsRequestsService } from '../services/todo-items-requests.service';
 import { TodoItemsService } from '../services/todo-items.service';
 
 @Injectable({
@@ -13,6 +14,7 @@ import { TodoItemsService } from '../services/todo-items.service';
 export class TodoItemsResolverService implements Resolve<any> {
   constructor(
     private todoItemsService: TodoItemsService,
+    private todoItemsRequestsService: TodoItemsRequestsService,
     private router: Router,
     private action$: Actions
   ) {
@@ -26,19 +28,16 @@ export class TodoItemsResolverService implements Resolve<any> {
 
     return this.action$
     .pipe(
-      take(2),
       ofActionDispatched(FetchTodoItemSuccessfully, FetchTodoItemFailed),
       map(({payload}) => {
         if (payload instanceof HttpErrorResponse) {
           this.router.navigate(['home']);
-        }
-        if (payload.length) {
-          return payload;
-        }
-        if (!payload.length) {
-          return [];
+          return false;
+        } else {
+          return true;
         }
       }),
+      take(1),
     );
 
   }
