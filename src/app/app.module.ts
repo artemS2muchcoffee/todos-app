@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
+import { TodoItemsState } from './ngxs/todo-items/todo-items.state';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,9 @@ import { SharedModule } from './shared/shared.module';
     CoreModule,
     SharedModule,
     HttpClientModule,
-    NgxsModule.forRoot([])
+    NgxsModule.forRoot([
+      TodoItemsState
+    ])
   ],
   providers: [],
   bootstrap: [AppComponent]
