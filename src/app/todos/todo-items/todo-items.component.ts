@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { combineLatest, map } from 'rxjs/operators';
 
-import { TodoItems } from '../../core/models/todo-items';
+import { TodoItem } from '../../core/models/todo-item';
 import { TodoItemsService } from '../../core/services/todo-items.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { TodoItemsService } from '../../core/services/todo-items.service';
   styleUrls: ['./todo-items.component.scss']
 })
 export class TodoItemsComponent implements OnInit {
-  todoItems$: Observable<TodoItems[]>;
+  todoItems$: Observable<TodoItem[]>;
 
   constructor(
     private todoItemsService: TodoItemsService,

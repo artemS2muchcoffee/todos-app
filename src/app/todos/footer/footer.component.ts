@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { TodoItems } from '../../core/models/todo-items';
+import { TodoItem } from '../../core/models/todo-item';
 import { TodoItemsService } from '../../core/services/todo-items.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { TodoItemsService } from '../../core/services/todo-items.service';
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements OnInit {
-  todoItems$: Observable<TodoItems[]>;
+  todoItems$: Observable<TodoItem[]>;
 
   constructor(
     private todoItemsService: TodoItemsService) {

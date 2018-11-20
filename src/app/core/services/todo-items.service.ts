@@ -3,16 +3,16 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject, throwError } from 'rxjs';
 import { catchError, map, mapTo, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { TodoItems } from '../models/todo-items';
+import { TodoItem } from '../models/todo-item';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodoItemsService {
-  todoItems$: BehaviorSubject<TodoItems[]> = new BehaviorSubject<TodoItems[]>([]);
+  todoItems$: BehaviorSubject<TodoItem[]> = new BehaviorSubject<TodoItem[]>([]);
 
-  addTodoItem$ = new Subject<TodoItems[]>();
-  fetchTodoItems$ = new Subject<TodoItems[]>();
+  addTodoItem$ = new Subject<TodoItem[]>();
+  fetchTodoItems$ = new Subject<TodoItem[]>();
   deleteTodoItem$ = new Subject();
   toggleTodoItemComplete$ = new Subject();
 
@@ -23,7 +23,7 @@ export class TodoItemsService {
     this.fetchTodoItems$
       .pipe(
         switchMap(
-          () => this.http.get<TodoItems[]>(`todo-items`)
+          () => this.http.get<TodoItem[]>(`todo-items`)
         ),
         catchError(this.handleError)
       )
@@ -32,7 +32,7 @@ export class TodoItemsService {
     this.addTodoItem$
       .pipe(
         switchMap((newTodoItem) => {
-          return this.http.post<TodoItems>(`todo-items`, newTodoItem);
+          return this.http.post<TodoItem>(`todo-items`, newTodoItem);
         }),
         catchError(this.handleError),
         withLatestFrom(this.todoItems$),
@@ -62,7 +62,7 @@ export class TodoItemsService {
             item.id === id
           );
           updateData.complete = !updateData.complete;
-          return this.http.put<TodoItems>(`todo-items/${id}`, updateData);
+          return this.http.put<TodoItem>(`todo-items/${id}`, updateData);
         }
       ),
       catchError(this.handleError),

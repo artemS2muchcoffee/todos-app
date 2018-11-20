@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { TodoItems } from '../../core/models/todo-items';
+import { TodoItem } from '../../core/models/todo-item';
 import { TodoItemsService } from '../../core/services/todo-items.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { TodoItemsService } from '../../core/services/todo-items.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  newTodoItem: TodoItems;
+  newTodoItem: TodoItem;
   clearValue = '';
 
   constructor(
@@ -17,7 +17,7 @@ export class HeaderComponent {
   }
 
   addTodoItem(value: string) {
-    this.newTodoItem = new TodoItems();
+    this.newTodoItem = new TodoItem();
     if (value) {
       this.newTodoItem.title = value;
       this.todoItemService.addTodoItem(this.newTodoItem);
