@@ -21,30 +21,30 @@ export class TodoItemsComponent implements OnInit {
 
   ngOnInit() {
 
-    this.todoItems$ = this.todoItemsService.todoItems$
-      .pipe(
-        combineLatest(
-          this.route.data
-            .pipe(map(
-              data => data.complete
-            ))
-        ),
-        map(([items, complete]) => {
-          return items.filter(
-            item => complete === undefined || complete === item.complete
-          );
-        })
-      );
+    // this.todoItems$ = this.todoItemsService.todoItems$
+    //   .pipe(
+    //     combineLatest(
+    //       this.route.data
+    //         .pipe(map(
+    //           data => data.complete
+    //         ))
+    //     ),
+    //     map(([items, complete]) => {
+    //       return items.filter(
+    //         item => complete === undefined || complete === item.complete
+    //       );
+    //     })
+    //   );
 
   }
 
-  changeTodoItemComplete(id: number) {
-    this.todoItemsService.toggleTodoItemComplete(id);
-  }
-
-  deleteTodoItemById(id: number) {
-    this.todoItemsService.deleteTodoItemById(id);
-  }
+  // changeTodoItemComplete(id: number) {
+  //   this.todoItemsService.toggleTodoItemComplete(id);
+  // }
+  //
+  // deleteTodoItemById(id: number) {
+  //   this.todoItemsService.deleteTodoItemById(id);
+  // }
 
 
 }

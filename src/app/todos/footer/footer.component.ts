@@ -17,7 +17,7 @@ export class FooterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.todoItems$ = this.todoItemsService.todoItems$;
+    // this.todoItems$ = this.todoItemsService.todoItems$;
   }
 
 }
